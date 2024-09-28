@@ -11,42 +11,88 @@ This AI-powered tool processes and generates Markdown files with ease, replicati
 It uses specific commands embedded within the **comments** of the Markdown file, allowing Ghost LLM to understand and replicate the formatting. These hidden commands trigger the AI to perform various actions, such as preserving the original formatting, adding or removing elements, and more.
 <!-- /chat fe27afb9 -->
 <!-- #chat you can use : seed, model, system, conversation, chat and context -->
-**Ghost LLM's Hidden Commands**
+**Ghost LLM Commands**
 
-You can utilize the following commands in comments to control Ghost LLM:
+You can control Ghost LLM's behavior by adding commands in comments, including:
 
-* `:seed`: Set a specific input or prompt for the AI.
-* `:model`: Specify which language model to use for processing.
-* `:system`: Configure system-specific settings, such as formatting or syntax.
-* `:conversation`: Engage in a conversation-like interaction with the AI.
-* `:chat`: Trigger a chat-like interface for interacting with the AI.
-* `:context`: Provide context for the AI to better understand the surrounding text.
-<!-- /chat 6c4261ff -->
+* `:seed` - Set input or prompt
+* `:model` - Specify language model
+* `:system` - Configure system settings
+* `:conversation` - Engage in conversation-like interaction
+* `:chat` - Trigger chat interface
+* `:context` - Provide context for AI understanding
+<!-- /chat bb621713 -->
 <!-- #chat seed set the seed for the llm so you get consisten results other the runs -->
 **Consistent Results with :seed**
 
-Using `:seed` in a comment sets a specific seed value for the Large Language Model (LLM), which ensures consistent results across multiple runs. This means that if you run the same input through Ghost LLM multiple times, you'll get identical output, as long as the seed remains the same.
-<!-- /chat 5a228b39 -->
+The `:seed` command allows you to set a specific value, ensuring **consistent results** across multiple runs of the AI. This means that even if you process the same input multiple times, Ghost LLM will always produce the **same output**, giving you predictable and reliable results.
+ 
+Example:
+```markdown
+:seed 1234
+```
+This sets the seed to 1234, ensuring consistent output on subsequent runs.
+<!-- /chat 6cf560c1 -->
 <!-- #chat model tells Ollama server which model to load -->
-**Model Selection with :model**
+**Easy Model Switching**
 
-Using `:model` in a comment instructs the Ollama server to load and use a specific language model for processing, allowing you to switch between different models as needed. This command enables flexibility and control over which model is used for generation or analysis tasks.
-<!-- /chat ed67c8ee -->
+Use `:model` command to **switch between models**, allowing you to:
+
+* Load specific models (`llama`, `bloom`, etc.)
+* Experiment with different models for diverse tasks
+* Adapt to changing requirements by switching between models.
+
+Example:
+```markdown
+:model llama
+```
+ Loads the LLaMA model.
+<!-- /chat 382df494 -->
 <!-- #chat system set system message that sets how ollama should respond -->
-**System Messages with :system**
+**Fine-Tuning Ollama with :system**
 
-Using `:system` in a comment allows you to set system messages that instruct Ollama on how to respond in specific situations, such as custom error messages or warnings. This command gives you fine-grained control over the output and behavior of the AI.
-<!-- /chat c26b85e7 -->
+Use `:system` command to **set custom system messages**, allowing you to:
+
+* Control how Ollama responds in various situations
+* Provide clear and concise answers
+* Adapt the AI's behavior to specific needs and requirements.
+
+Example:
+```markdown
+:system "I'm not sure what you mean."
+```
+ Sets a custom response for when Ollama is unsure about a question or statement.
+<!-- /chat 2b205881 -->
 <!-- #chat conversation can group messages together -->
-**Conversational Groups with :conversation**
+**Grouping Messages with :conversation**
 
-Using `:conversation` in a comment enables grouping related messages together, allowing Ollama to understand the context and flow of a conversation. This command helps the AI identify themes, tone, and intent within a series of messages, making it more conversational and contextual.
-<!-- /chat 84900a0d -->
+Use `:conversation` to **group related messages**, enabling Ghost LLM to:
+
+* Recognize context and connections between messages
+* Understand the flow of conversation and relationships between ideas
+* Provide more cohesive, relevant, and contextual responses.
+
+Example:
+```markdown
+:conversation "Discuss AI ethics"
+```
+ Groups subsequent messages under the topic of discussing AI ethics.
+<!-- /chat b6d0d88c -->
 <!-- #chat chat provide information to llm what to do -->
-**Chat Commands with :chat**
+**Explicit Control with :chat**
 
-Using `:chat` in a comment provides direct instructions to Ollama on how to proceed or respond to specific inputs, acting as a kind of "chat command" that overrides default behavior. This allows you to explicitly tell the AI what to do in a particular situation.
-<!-- /chat 906250cc -->
+The `:chat` command gives you **explicit control** over Ollama, allowing you to:
+
+* Dictate specific responses or outputs
+* Update the AI's behavior in real-time
+* Customize interactions with explicit commands.
+
+Example:
+```markdown
+:chat "tell me a joke"
+```
+ Tells Ollama to respond with a joke.
+<!-- /chat 4f525208 -->
 <!-- #conversation ghost_llm -->
 <!-- #context: ./src/ghost_llm.py -->
 <!-- #chat describe all the cli interface -->
@@ -83,3 +129,7 @@ python script.py /path/to/src --ollama https://example.com/ollama
 ```
 <!-- /chat ef408743 -->
 <!-- /conversation -->
+<!-- #generated -->
+---
+Generated by: [ghost-writer-llm](https://github.com/smigielski/ghost-writer-llm)
+<!-- /generated -->

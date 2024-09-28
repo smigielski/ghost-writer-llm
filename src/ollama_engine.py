@@ -87,10 +87,12 @@ class OllamaEngine:
             self.conversation_history[self.current_conversation].append(("assistant",response))
         
     
-    def chat(self, text):
+    def chat(self, text, response=None):
         self.conversation_history[self.current_conversation].append(("user",text))
 
         messages=self.__getMessages()
+        if response:
+            messages[-1]['content'] += '\nUpdate: ' + response
 
         response = self.client.chat(model=self.current_model,messages=messages, options={'seed': self.current_seed})
         self.conversation_history[self.current_conversation].append(("assistant",response['message']['content']))
