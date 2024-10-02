@@ -82,7 +82,7 @@ To fine-tune **Ghost LLM**, configure a system message that sets the tone for in
 
 Use `#system` to define a message that will be displayed before each command execution.
 
-*   **Example:** `#system You are a professional developer. Print output as markdown.``
+*   **Example:** `#system You are a professional developer. Print output as markdown.`
 *   **Format:** `<command> #system <message>`
 *   **Tips:**
     *   Replace `<message>` with the desired system message.
