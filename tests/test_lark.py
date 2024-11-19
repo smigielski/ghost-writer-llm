@@ -4,13 +4,13 @@ sys.path.insert(0, './src')
 from lark import Lark, Token, Tree
 import logging
 
-class TestLarkEngine(unittest.TestCase):
+class TestLark(unittest.TestCase):
     def setUp(self) -> None:
         self.maxDiff= None
         logger = logging.getLogger()
         logger.level = logging.DEBUG
 
-    def test_model(self):
+    def test_parse_grammar(self):
 
         with open('./src/command_grammar.lark') as grammar_file:
             parser = Lark(grammar_file.read(), start='start')

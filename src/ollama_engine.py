@@ -79,6 +79,7 @@ class OllamaEngine:
         messages.append({'role': 'user', 'content': text})
         # Convert messages to JSON string
         json_messages = json.dumps(messages, indent=4)
+        print(json_messages)
         return hashlib.sha256(json_messages.encode()).hexdigest()[-8:]
 
     def update_chat(self,text,response=None):
@@ -87,15 +88,13 @@ class OllamaEngine:
             self.conversation_history[self.current_conversation].append(("assistant",response))
         
     
-    def chat(self, text, response=None):
+    def chat(self, text):
         self.conversation_history[self.current_conversation].append(("user",text))
 
         messages=self.__getMessages()
-        if response:
-            messages[-1]['content'] += '\nUpdate: ' + response
 
         response = self.client.chat(model=self.current_model,messages=messages, options={'seed': self.current_seed})
-        self.conversation_history[self.current_conversation].append(("assistant",response['message']['content']))
+        self.conversation_history[self.current_conversation].append(("assistant",response['message']['content']+'\n'))
         return response['message']['content']+'\n'
     
     def close_chat(self):

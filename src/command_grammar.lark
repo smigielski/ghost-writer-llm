@@ -5,7 +5,8 @@
 
 start: anything+
 
-anything: content | model | system | conversation | chat | generated | opening_command  
+anything: content | chat | generated | opening_command | closing_command | opening_chat | opening_generated | opening_context
+
 content: TEXT | INLINE | MULTILINE | WS
 
 TEXT: /(?:(?!<!--\s*[#\/].*?-->|`.*`|```[^`]+```).)+/
@@ -14,7 +15,7 @@ MULTILINE.999: /```.+?```/s
 
 LEFT_COMMENT: /<!--\s*/
 RIGHT_COMMENT: /\s*-->\n?/
-// Match all the possible commands
+
 
 OPENING_COMMAND_SYMBOL: "#"
 CLOSING_COMMAND_SYMBOL: "/"
@@ -23,6 +24,7 @@ SEED_COMMAND: "seed"
 MODEL_COMMAND: "model"
 SYSTEM_COMMAND: "system"
 CONVERSATION_COMMAND: "conversation"
+CONTEXT_COMMAND: "context"
 CHAT_COMMAND: "chat"
 GENERATED_COMMAND: "generated"
 
@@ -31,30 +33,17 @@ COMMAND_TEXT: /(?:(?!\s*-->).)+/
 opening_seed: LEFT_COMMENT OPENING_COMMAND_SYMBOL SEED_COMMAND WS_INLINE+ INT RIGHT_COMMENT
 
 // Match model 
-opening_model: LEFT_COMMENT OPENING_COMMAND_SYMBOL MODEL_COMMAND WS_INLINE+ COMMAND_TEXT RIGHT_COMMENT
-closing_model: LEFT_COMMENT CLOSING_COMMAND_SYMBOL MODEL_COMMAND RIGHT_COMMENT
-model.1: opening_model anything+ closing_model
+opening_command: LEFT_COMMENT OPENING_COMMAND_SYMBOL (SEED_COMMAND | MODEL_COMMAND | SYSTEM_COMMAND | CONVERSATION_COMMAND) WS_INLINE+ COMMAND_TEXT RIGHT_COMMENT
+closing_command: LEFT_COMMENT CLOSING_COMMAND_SYMBOL (SEED_COMMAND | MODEL_COMMAND | SYSTEM_COMMAND | CONVERSATION_COMMAND) RIGHT_COMMENT
 
-// Match system 
-opening_system: LEFT_COMMENT OPENING_COMMAND_SYMBOL SYSTEM_COMMAND WS_INLINE+ COMMAND_TEXT RIGHT_COMMENT
-closing_system: LEFT_COMMENT CLOSING_COMMAND_SYMBOL SYSTEM_COMMAND RIGHT_COMMENT
-system.1: opening_conversation anything+ closing_conversation
-
-// Match conversation 
-opening_conversation: LEFT_COMMENT OPENING_COMMAND_SYMBOL CONVERSATION_COMMAND WS_INLINE+ COMMAND_TEXT RIGHT_COMMENT
-closing_conversation: LEFT_COMMENT CLOSING_COMMAND_SYMBOL CONVERSATION_COMMAND RIGHT_COMMENT
-conversation.1: opening_conversation anything+ closing_conversation
-
+opening_context: LEFT_COMMENT OPENING_COMMAND_SYMBOL CONTEXT_COMMAND WS_INLINE+ COMMAND_TEXT RIGHT_COMMENT
 
 // Match chat with internal part
 opening_chat: LEFT_COMMENT OPENING_COMMAND_SYMBOL CHAT_COMMAND WS_INLINE+ COMMAND_TEXT RIGHT_COMMENT
-closing_chat: LEFT_COMMENT CLOSING_COMMAND_SYMBOL CHAT_COMMAND RIGHT_COMMENT
+closing_chat: LEFT_COMMENT CLOSING_COMMAND_SYMBOL CHAT_COMMAND WS_INLINE+ COMMAND_TEXT RIGHT_COMMENT
 chat.1: opening_chat content+ closing_chat
 
 // Match generated footer text
-opening_generated: LEFT_COMMENT OPENING_COMMAND_SYMBOL GENERATED_COMMAND RIGHT_COMMENT
+opening_generated: LEFT_COMMENT OPENING_COMMAND_SYMBOL GENERATED_COMMAND WS_INLINE+ COMMAND_TEXT RIGHT_COMMENT
 closing_generated: LEFT_COMMENT CLOSING_COMMAND_SYMBOL GENERATED_COMMAND RIGHT_COMMENT
 generated.1: opening_generated content+ closing_generated
-
-
-opening_command: opening_seed | opening_model| opening_system | opening_conversation | opening_chat | opening_generated 

@@ -22,67 +22,106 @@ Non-native English speakers struggle with writing correct English, leading to de
 <!-- /chat 6a068673 -->
 <!-- #chat Explain "How". Having this in mind, there is no easier way then just using markdown itself, enhance it with human to llm interaface in order to generate text. -->
 # How Ghost LLM Works
-## Leveraging Markdown & Human-LLM Interface
-Ghost LLM enhances Markdown by integrating a human-LLM interface, allowing users to:
+## Leveraging Markdown and LLM
+Ghost LLM enhances markdown by integrating a Human-to-LLM interface. This seamless fusion enables users to:
 
-* Add hidden comments within Markdown files
-* Interact with the LLM through a simple interface
-* Generate high-quality text based on markdown content and user input
-<!-- /chat 5eb8336f -->
+* Write hidden comments in markdown files
+* Trigger LLM-generated content based on these comments
+* Review and refine the output for accuracy
+<!-- /chat 7e2e8d6c -->
 <!-- #chat in fact this README file was create like that. In order to see it check raw content -->
-# Creating Readme Files
-## The Ghost LLM Process
-This very README file demonstrates the process:
+# Raw Markdown Content
+## Example of Hidden Comments
+```markdown
+# Ghost LLM: A Markdown Automation Tool
+## Description
+Ghost LLM is a powerful AI-driven tool designed to accelerate documentation creation by leveraging hidden comments in markdown files.
 
-1. Initial Markdown with hidden comments (only visible in Raw mode)
-2. Human-LLM interface used to interact with Ghost LLM
-3. Generated text based on markdown content and user input
-<!-- /chat d50f09a7 -->
+### Key Features
+* **Markdown Processing**: Automatically generates content from markdown files based on hidden comments.
+* **Documentation Speedup**: Streamlines the documentation process, saving time and effort for writers and developers alike.
+
+## Why Ghost LLM?
+## Bridging the Gap
+Documentation creation takes significantly more time than reading, yet readers are more invested in consuming content. I built Ghost LLM to bridge this gap by automating documentation generation from markdown files.
+
+## Additional Challenge
+## Language Barriers
+Non-native English speakers struggle with writing correct English, leading to delayed or abandoned documentation efforts. Ghost LLM aims to alleviate this issue by generating clear and concise content.
+
+## How Ghost LLM Works
+## Leveraging Markdown and LLM
+Ghost LLM enhances markdown by integrating a Human-to-LLM interface. This seamless fusion enables users to:
+
+* Write hidden comments in markdown files
+* Trigger LLM-generated content based on these comments
+* Review and refine the output for accuracy
+
+### Example of Hidden Comments
+* What is Ghost LLM?
+  ~~~
+  A tool that helps with documentation creation.
+  ~~~
+* Why do we need Ghost LLM?
+  ~~~
+  To make documentation faster to create, without sacrificing quality.
+  ~~~
+```
+<!-- /chat a04b6035 -->
 <!-- #chat Regarding "what". First thing is to install Ollama based on https://ollama.com/ -->
-# Getting Started with Ghost LLM
-## Installing Ollama
-1. Go to [https://ollama.com/](https://ollama.com/)
-2. Follow the instructions to install and set up Ollama, which is the core Large Language Model used by Ghost LLM.
-<!-- /chat be434ad1 -->
+# Installing OLLAMA
+## Step 1: Set up OLLAMA
+To use Ghost LLM, you need to set up an OLLAMA instance. Follow these steps:
+
+### 1. Create an account on ollama.com
+Sign up for a free account on the official OLLAMA website.
+
+### 2. Install the OLLAMA CLI
+Run `npm install -g @ollama/cli` in your terminal to install the OLLAMA Command-Line Interface (CLI).
+
+### 3. Login to OLLAMA using the CLI
+Use the `ollama login` command to authenticate with your OLLAMA account.
+
+### 4. Create a new model
+Run `ollama create-model --name ghost-llm` to set up a new OLLAMA model for Ghost LLM.
+
+That's it! Your OLLAMA instance is now ready to use with Ghost LLM.
+<!-- /chat 1a965738 -->
 <!-- #chat Next is to decide which model will be used. Model need to be provided just after command like #model <model_name:version> -->
-# Configuring Ghost LLM
-## Choosing a Model
-Specify the desired Ollama model using:
+# Specifying the OLLAMA Model
+## Adding a Model Identifier
+To select a specific OLLAMA model for Ghost LLM, you need to specify the model name and version immediately after the `ollama` command. For example:
 
-`#model <model_name:version>`
+```bash
+ollama --model ghost-llm:latest <your_markdown_file.md>
+```
 
-Example:
-`#model x-large:1.0`
-<!-- /chat 0876eeba -->
+Replace `<your_markdown_file.md>` with the actual path to your markdown file. This will trigger Ghost LLM to generate content based on the provided markdown and hidden comments, using the specified OLLAMA model.
+<!-- /chat e7b0f5fd -->
 <!-- #chat then set system message like: "#system You are professional technical writer. Don't print what you do. Print output as markdown. Give short text." -->
 # System Message
-## Ghost LLM Instructions
-`#system`
+## Guidelines for Interaction
 You are a professional technical writer.
-Don't print what you do.
-Print output as Markdown.
-Give answers in short text.
-<!-- /chat c9b0ce96 -->
+Don't write out your actions.
+Print the output in markdown format.
+Keep your responses concise.
+<!-- /chat ce984e77 -->
 
 <!-- #chat in order to ask for content generate use "#chat message". and that's it -->
-# Starting the Conversation
-## Generating Content
-Type your request using:
-
-`#chat message`
-
-Example:
-`#chat Write a brief introduction about Ghost LLM.`
-<!-- /chat 8f59aeb8 -->
+# Generating Content
+## Using Ghost LLM
+Type `#chat What is Ghost LLM?` to trigger the generation of content based on the hidden comments in your markdown file, using the specified OLLAMA model.
+<!-- /chat 8408c66f -->
 
 <!-- #chat there is also #converstation <name>, to start new conversation context. #context <src> to embed files from project, #seed <number> to set fixed seed for all the conversations -->
-# Advanced Commands
-## Conversation Management
+# Conversation Management
+## Contextualizing Conversations
+To manage conversational context:
 
 * `#conversation <name>`: Start a new conversation context.
-* `#context <src>`: Embed files from the project into conversations.
+* `#context <path>`: Embed a file from your project into the conversation.
 * `#seed <number>`: Set a fixed seed for all conversations, ensuring reproducibility.
-<!-- /chat bd860f6a -->
+<!-- /chat 5f49d7c1 -->
 
 <!-- #conversation usuage -->
 <!-- #context ./src/ghost_llm.py -->
