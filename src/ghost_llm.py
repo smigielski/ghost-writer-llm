@@ -49,20 +49,23 @@ def watch_directory(src_dir,recursive):
         observer.stop()
     observer.join()
 
-def process_now(src_dir,recursive,dry_run):
+def process_now(src,recursive,dry_run):
     md_files = []
-    if recursive:
-        for root, dirs, files in os.walk(src_dir):
-            for file in files:
-                if file.endswith('.md'):
-                    md_files.append(os.path.join(root, file))
-    else:
-        for item in os.listdir(src_dir):
-            # Check if the item is a file and its extension is .md
-            if os.path.isfile(os.path.join(src_dir, item)) and item.endswith('.md'):
-                # If it's an .md file, add it to the list of md_files
-                md_files.append(item)
-
+    if os.path.isdir(src):
+        if recursive:
+            for root, dirs, files in os.walk(src):
+                for file in files:
+                    if file.endswith('.md'):
+                        md_files.append(os.path.join(root, file))
+        else:
+            for item in os.listdir(src):
+                # Check if the item is a file and its extension is .md
+                if os.path.isfile(os.path.join(src, item)) and item.endswith('.md'):
+                    # If it's an .md file, add it to the list of md_files
+                    md_files.append(item)
+    elif os.path.isfile(src) and src.endswith('.md'):
+        md_files.append(src)
+        
     for md_file in md_files:
         process_file(md_file,dry_run)
 

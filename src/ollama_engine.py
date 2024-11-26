@@ -15,6 +15,7 @@ class OllamaEngine:
         self.system_stack = []
         self.conversation_stack = [self.current_conversation]
         self.conversation_history = {self.current_conversation: []}
+        self.images = {self.current_conversation: []}
         print(f"Ollama: {server}")
         # client = ollama.Client('http://192.168.1.52:11434')
         self.client = ollama.Client(server)
@@ -65,6 +66,7 @@ class OllamaEngine:
         self.conversation_stack.append(self.current_conversation)
         self.current_conversation = conversation
         self.conversation_history[self.current_conversation] = []
+        self.images[self.current_conversation] = []
         return ""
     
     def close_conversation(self):
@@ -76,25 +78,27 @@ class OllamaEngine:
 
     def compute_hash(self,text):
         messages = self.__getMessages()
-        messages.append({'role': 'user', 'content': text})
+        messages.append({'role': 'user', 'content': text, 'images': self.images[self.current_conversation]})
         # Convert messages to JSON string
         json_messages = json.dumps(messages, indent=4)
-        print(json_messages)
         return hashlib.sha256(json_messages.encode()).hexdigest()[-8:]
 
     def update_chat(self,text,response=None):
-        self.conversation_history[self.current_conversation].append(("user",text))
+        self.conversation_history[self.current_conversation].append(("user",text,self.images[self.current_conversation]))
+        self.images[self.current_conversation] = []
         if response:
-            self.conversation_history[self.current_conversation].append(("assistant",response))
+            self.conversation_history[self.current_conversation].append(("assistant",response,[]))
         
-    
-    def chat(self, text):
-        self.conversation_history[self.current_conversation].append(("user",text))
+    def update_image(self,image_src):
+        self.images[self.current_conversation].append(image_src)
 
+    def chat(self, text):
+        self.conversation_history[self.current_conversation].append(("user",text,self.images[self.current_conversation]))
+        self.images[self.current_conversation] = []
         messages=self.__getMessages()
 
         response = self.client.chat(model=self.current_model,messages=messages, options={'seed': self.current_seed})
-        self.conversation_history[self.current_conversation].append(("assistant",response['message']['content']+'\n'))
+        self.conversation_history[self.current_conversation].append(("assistant",response['message']['content']+'\n',[]))
         return response['message']['content']+'\n'
     
     def close_chat(self):
@@ -104,6 +108,6 @@ class OllamaEngine:
         messages=[]
         if self.current_system:
             messages.append({'role': 'system', 'content': self.current_system})        
-        for role,content in self.conversation_history[self.current_conversation]:
-            messages.append({'role': role, 'content': content})
+        for role,content,images in self.conversation_history[self.current_conversation]:
+            messages.append({'role': role, 'content': content, 'images': images})
         return messages

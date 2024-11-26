@@ -67,10 +67,15 @@ class MarkdownProcessor:
                     return "".join(self.recover_text(child) for child in tree.children[0].children) + output_text          
                 elif tree.data.value == 'opening_context':
                     func_name,func_args = self.get_func_from_children(tree.children)                            
-                    # Load file specified in func_args
-                    with open(self.src + func_args, 'r') as f:
-                        context = f.read()
-                    self.engine.update_chat("Context: "+context)
+                    
+                    # func_args finsh with jpg or png
+                    
+                    if func_args.endswith("png") or func_args.endswith("jpg"):
+                        self.engine.update_image(self.src + func_args)
+                    else:
+                        with open(self.src + func_args, 'r') as f:
+                            context = f.read()
+                        self.engine.update_chat("Context: "+context)
                     return "".join(self.recover_text(child) for child in tree.children)
                 else:
                     return "".join(self.recover_text(child) for child in tree.children)
